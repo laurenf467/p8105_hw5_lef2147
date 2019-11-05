@@ -1,0 +1,96 @@
+---
+title: "Homework 5"
+author: "lauren franks, lef2147"
+date: "11/4/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+Question 1:
+The code chunk below loads the iris dataset from the tidyverse package and introduces some missing values in each column. The purpose of this problem is to fill in those missing values.
+
+There are two cases to address:
+
+ - For numeric variables, you should fill in missing values with the mean of non-missing values
+ - For character variables, you should fill in missing values with "virginica"
+
+Write a function that takes a vector as an argument; replaces missing values using the rules defined above; and returns the resulting vector. Apply this function to the columns of iris_with_missing using a map statement.
+```{r}
+library(tidyverse)
+
+set.seed(10)
+
+iris_with_missing = iris %>% 
+  map_df(~replace(.x, sample(1:150, 20), NA)) %>%
+  mutate(Species = as.character(Species))
+```
+
+
+```{r}
+
+missing_values = function(df) {
+  
+  output = vector("list", length = 4)
+  
+  for (i in 1:4) {
+    output[[i]] = mean(pull(iris_with_missing, i), na.rm = TRUE)
+  }
+  
+  if (is.character(df[,i])) {
+    replace_na(df[,i], "virginica")
+  } else if (is.numeric(df[,i])) {
+    replace_na(df[,i], output)
+  }
+  
+}
+  
+missing_values(iris_with_missing)
+  
+  
+
+z_scores = function(x) {
+  
+  if (!is.numeric(x)) {
+    stop("Argument x should be numeric")
+  } else if (length(x) == 1) {
+    stop("Z scores cannot be computed for length 1 vectors")
+  }
+  
+  z = mean(x) / sd(x)
+  
+  z
+}
+
+
+
+
+iris_with_missing = replace_na(iris_with_missing, list(Sepal.Length = 1, Sepal.Width = 2,Petal.Length = 3, Petal.Width = 4, Species = "virginica"))
+
+
+
+
+missing_values(iris_with_missing)  
+  
+  iris_with_missing
+  
+  
+  
+  output = vector("list", length = 4)
+
+  for (i in 1:4) {
+    output[[i]] = mean(pull(iris_with_missing, i), na.rm = TRUE)
+  }
+  
+  replace_na(iris_with_missing, output)
+
+
+
+
+
+
+```
+
